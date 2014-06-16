@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/apache/hadoop/yarn/LogAnalysiser.java=UTF-8
+encoding//src/main/java/com/apache/hadoop/yarn/MapClass.java=UTF-8
+encoding//src/main/java/com/apache/hadoop/yarn/PartitionerClass.java=UTF-8
+encoding//src/main/java/com/apache/hadoop/yarn/ReduceClass.java=UTF-8
