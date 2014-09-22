@@ -76,8 +76,8 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/jvm</sourceDirectory>
-    <testSourceDirectory>test/jvm</testSourceDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
     <resources>
       <resource>
         <directory>${basedir}/multilang</directory>
