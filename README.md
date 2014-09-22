@@ -1,4 +1,4 @@
-#hadoop mr, yarn, spark storm on yarn
+#hadoop mr, yarn, spark, storm on yarn
 
 ##1.run mr
 <code>hadoop jar target/my-hadoop-1.0-SNAPSHOT.jar org.apache.hadoop.mr.App /user/ning/wordcount/in /user/ning/wordcount/out4</code>
