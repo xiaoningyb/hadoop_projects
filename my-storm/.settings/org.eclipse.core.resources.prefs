@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+encoding//src/main/java/storm/example/ning/KafkaTopology.java=UTF-8
+encoding//src/main/java/storm/example/ning/WordCountTopology.java=UTF-8

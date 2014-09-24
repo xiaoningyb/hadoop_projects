@@ -6,29 +6,50 @@ import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
+import backtype.storm.utils.Time;
 import backtype.storm.utils.Utils;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
-import java.util.Random;
+import java.util.Scanner;
 
 public class StdinSpout extends BaseRichSpout {
   SpoutOutputCollector _collector;
-  Random _rand;
-
 
   @Override
   public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
     _collector = collector;
-    _rand = new Random();
   }
 
   @Override
   public void nextTuple() {
-    Utils.sleep(100);
-    String[] sentences = new String[]{ "the cow jumped over the moon", "an apple a day keeps the doctor away",
-        "four score and seven years ago", "snow white and the seven dwarfs", "i am at two with nature" };
-    String sentence = sentences[_rand.nextInt(sentences.length)];
-    _collector.emit(new Values(sentence));
+	try {
+          Time.sleep(100);
+    } catch(InterruptedException e) {
+        throw new RuntimeException(e);
+    }
+	File file = new File("./test/data.dat");
+	BufferedReader reader = null;
+	 try {
+		 reader = new BufferedReader(new FileReader(file));
+		 String tempString = null;
+		 while ((tempString = reader.readLine()) != null) {
+			 _collector.emit(new Values(tempString));
+		 }
+		 reader.close();
+	 } catch (IOException e) {
+         e.printStackTrace();
+     } finally {
+         if (reader != null) {
+             try {
+                 reader.close();
+             } catch (IOException e1) {
+             }
+         }
+     }
   }
 
   @Override
