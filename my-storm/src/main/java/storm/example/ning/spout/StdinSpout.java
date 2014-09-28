@@ -18,6 +18,7 @@ import java.util.Scanner;
 
 public class StdinSpout extends BaseRichSpout {
   SpoutOutputCollector _collector;
+  int _count = 0;
 
   @Override
   public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
@@ -31,6 +32,19 @@ public class StdinSpout extends BaseRichSpout {
     } catch(InterruptedException e) {
         throw new RuntimeException(e);
     }
+	
+	if(_count > 100)
+	{
+		System.out.println(_count+" try to emit tuple by success_stream");
+	    _collector.emit("SUCCESS_STREAM", new Values(""));
+	    try {
+	          Time.sleep(10000);
+	    } catch(InterruptedException e) {
+	        throw new RuntimeException(e);
+	    }
+	    return;
+	}
+	
 	File file = new File("./test/data.dat");
 	BufferedReader reader = null;
 	 try {
@@ -38,6 +52,7 @@ public class StdinSpout extends BaseRichSpout {
 		 String tempString = null;
 		 while ((tempString = reader.readLine()) != null) {
 			 _collector.emit(new Values(tempString));
+			 _count++;
 		 }
 		 reader.close();
 	 } catch (IOException e) {
@@ -63,6 +78,7 @@ public class StdinSpout extends BaseRichSpout {
   @Override
   public void declareOutputFields(OutputFieldsDeclarer declarer) {
     declarer.declare(new Fields("word"));
+    declarer.declareStream("SUCCESS_STREAM",new Fields("word"));
   }
 
 }

@@ -57,6 +57,17 @@ public class WordCountTopology {
 
     @Override
     public void execute(Tuple tuple, BasicOutputCollector collector) {
+    	
+	  if ( tuple.getSourceStreamId() == "SUCCESS_STREAM" ) {
+    	    System.out.println("======prepare to print the statistics======"+this); 
+    	    for (String key : counts.keySet()) {
+    	      System.out.println(key+"\t"+counts.get(key));
+            }
+    	    System.out.println("======end to print the statistics======"+this); 
+    	    dumpToFile();
+    	    return;
+	  }
+	  
       System.out.println("==========="+this);
       String word = tuple.getString(0);
       Integer count = counts.get(word);
@@ -110,7 +121,11 @@ public class WordCountTopology {
 
     builder.setSpout("spout", new StdinSpout(), 5);
     builder.setBolt("split", new SplitSentence(), 16).shuffleGrouping("spout");
-    builder.setBolt("count", new WordCount(), 3).fieldsGrouping("split", new Fields("word"));
+    builder.setBolt("count", new WordCount(), 3)
+    	.fieldsGrouping("split", new Fields("word"))
+    	//.fieldsGrouping("spout","SUCCESS_STREAM", new Fields("word"));;
+    	//.shuffleGrouping("split")
+    	.allGrouping("spout", "SUCCESS_STREAM");
     Config conf = new Config();  
     conf.setDebug(true);
 

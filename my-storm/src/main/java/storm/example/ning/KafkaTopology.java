@@ -21,19 +21,21 @@ public class KafkaTopology {
 
 		// 配置Zookeeper地址
 	    BrokerHosts brokerHosts = new ZkHosts("localhost:2181");
+		//BrokerHosts brokerHosts = new ZkHosts("10.205.34.41:2181,10.205.34.44:2181,10.205.34.43:2181");
 	    // 配置Kafka订阅的Topic，以及zookeeper中数据节点目录和名字
-	    SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, "test", "/zkkafkaspout" , "kafkaspout");
+	    SpoutConfig spoutConfig = new SpoutConfig(brokerHosts, "storm-1", "/zkkafkaspout" , "kafkaspout");
 	     
 	    // 配置KafkaBolt中的kafka.broker.properties
 	    Config conf = new Config();  
 		Map<String, String> map = new HashMap<String, String>(); 
-		// 配置Kafka broker地址       
-	    map.put("metadata.broker.list", "localhost:9092");
+		// 配置Kafka broker地址   
+		map.put("metadata.broker.list", "localhost:9092");
+	    //map.put("metadata.broker.list", "10.205.34.41:9092");
 		// serializer.class为消息的序列化类
 		map.put("serializer.class", "kafka.serializer.StringEncoder");
 		conf.put("kafka.broker.properties", map);
 		// 配置KafkaBolt生成的topic
-		conf.put("topic", "topic_out");
+		conf.put("topic", "storm-2");
 	      
 	    spoutConfig.scheme = new SchemeAsMultiScheme(new MessageScheme());
 		  
