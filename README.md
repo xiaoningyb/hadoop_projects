@@ -28,3 +28,6 @@ consumer: <code>kafka-console-consumer.sh --zookeeper localhost:2181 --topic top
 local: <code>storm jar ./target/my-storm-1.0-SNAPSHOT-jar-with-dependencies.jar storm.example.ning.KafkaTopology</code>
 
 remote: <code>storm jar ./target/my-storm-1.0-SNAPSHOT-jar-with-dependencies.jar storm.example.ning.KafkaTopology kafka</code>
+
+##5.run the spark streaming with kafaka
+<code>spark-submit --class com.apache.spark.JavaKafkaWordCount --master yarn-cluster --num-executors 3 --driver-memory 4g --executor-memory 2g --executor-cores 1 ./target/my-spark-1.0-SNAPSHOT-jar-with-dependencies.jar localhost:2181 group spark-stream 1</code>
