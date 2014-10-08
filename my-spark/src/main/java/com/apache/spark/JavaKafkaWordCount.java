@@ -45,11 +45,14 @@ public final class JavaKafkaWordCount {
       System.err.println("Usage: JavaKafkaWordCount <zkQuorum> <group> <topics> <numThreads>");
       System.exit(1);
     }
+    
+    System.out.println("JavaKafkaWordCount : zkQuorum:" + args[0] + ", group:" + args[1] 
+    					+ ", topics:" + args[2] + ", numThreads:" + args[3]);
 
     //StreamingExamples.setStreamingLogLevels();
     SparkConf sparkConf = new SparkConf().setAppName("JavaKafkaWordCount");
     // Create the context with a 1 second batch size
-    JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, new Duration(2000));
+    JavaStreamingContext jssc = new JavaStreamingContext(sparkConf, new Duration(10000));
 
     int numThreads = Integer.parseInt(args[3]);
     Map<String, Integer> topicMap = new HashMap<String, Integer>();
@@ -64,6 +67,7 @@ public final class JavaKafkaWordCount {
     JavaDStream<String> lines = messages.map(new Function<Tuple2<String, String>, String>() {
       @Override
       public String call(Tuple2<String, String> tuple2) {
+    	System.out.println("messages.map : tuple2._1" + tuple2._1 + ", tuple2._2" + tuple2._2);
         return tuple2._2();
       }
     });
@@ -71,6 +75,7 @@ public final class JavaKafkaWordCount {
     JavaDStream<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
       @Override
       public Iterable<String> call(String x) {
+    	System.out.println("lines.flatMap : " + x);
         return Lists.newArrayList(SPACE.split(x));
       }
     });

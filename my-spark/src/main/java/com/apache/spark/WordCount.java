@@ -32,6 +32,7 @@ public class WordCount {
 	    JavaRDD<String> words = lines.flatMap(new FlatMapFunction<String, String>() {
 	      @Override
 	      public Iterable<String> call(String s) {
+	    	System.out.println("flatMap: " + s);
 	        return Arrays.asList(SPACE.split(s));
 	      }
 	    });
@@ -39,6 +40,7 @@ public class WordCount {
 	    JavaPairRDD<String, Integer> ones = words.mapToPair(new PairFunction<String, String, Integer>() {
 	      @Override
 	      public Tuple2<String, Integer> call(String s) {
+	    	System.out.println("mapToPair: " + s);  
 	        return new Tuple2<String, Integer>(s, 1);
 	      }
 	    });
